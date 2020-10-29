@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>HUSTAR ICT-Login</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+        <link rel="stylesheet" href="assets/css/login-style.css">
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="form-wrap">
+                <div class="button-wrap">
+                    <div id="btn"></div>
+                    <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
+                    <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
+                </div>
+                <div style="text-align:center;">
+                	<img src="/images/hustar-logo.png" width="40%">
+                </div>
+                <form id="login" action="/loginSvs" class="input-group" style="margin-top: 30px;" method="get">
+                    <input type="text" id="id" name="id" class="input-field" placeholder="ID" required>
+                    <input type="password" id="password" name="password" class="input-field" placeholder="Password" required>
+                    <input type="checkbox" class="checkbox"><span>Remember Password</span>
+                    <button type="submit" class="submit" id="loginBtn">Login</button>
+                </form>
+                <form id="register" action="" class="input-group">
+                    <input type="text" id="id" name="id" class="input-field" placeholder="ID" required>
+                    <input type="password" id="password" name="password" class="input-field" placeholder="Password" required>
+                    
+                    <input type="text" id="name" name="name" class="input-field" placeholder="이름" required>
+                    <input type="email" id="email" name="email" class="input-field" placeholder="이메일" required>
+                    <input type="text" id="phone" name="phone" class="input-field" placeholder="휴대전화 ('-'없이 번호만 입력해주세요.)" required>
+                    <div>
+                    	<input type="checkbox" class="checkbox" name="auth"><span>Terms and conditions</span>
+                    	
+                    </div>
+                    
+                    <button class="submit" id="registerBtn">REGISTER</button>
+                </form>
+            </div>
+        </div>
+        <script>
+            var x = document.getElementById("login");
+            var y = document.getElementById("register");
+            var z = document.getElementById("btn");     
+            
+            function login(){
+                x.style.left = "50px";
+                y.style.left = "450px";
+                z.style.left = "0";
+            }
+
+            function register(){
+                x.style.left = "-400px";
+                y.style.left = "50px";
+                z.style.left = "110px";
+            }
+        </script>
+        
+        <script type="text/javascript">
+        $('#loginBtn').click(function () {
+        	var jsonData=JSON.stringify({
+        		id:$('#id').val(),
+        		password:$('#password').val()
+        	});
+            
+        	
+        	$.ajax({
+                url: "http://localhost:8080/basic/insert",
+                type: "POST",
+                data: jsonData,
+                contentType: "application/json",
+                headers: {
+                    "Authorization": "Basic " + btoa("havi" + ":" + "test")
+                },
+                dataType: "json",
+                    success: function () {
+                        alert('저장 성공!');
+                        location.href = '/board/list';
+                },
+                error: function () {
+                    alert('저장 실패!');
+                   
+                }
+            });
+        });
+		</script>
+        
+
+        
+    </body>
+</html>

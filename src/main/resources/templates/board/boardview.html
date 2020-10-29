@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<!--
+	Industrious by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>자유게시판</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"  />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" th:href="@{/css/base.css}" />
+   		 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="home"><img src="/images/hustar-logo.png" width="20%"></a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="summary">사업개요</a></li>
+					<li><a href="company">참여기업</a></li>
+					<li><a href="list">커뮤니티</a></li>
+					<li><a href="logout" th:if="${userNameSe} != null" th:text="로그아웃"></a></li>
+					<li><a href="login" th:unless="${userNameSe} != null" th:text="로그인"></a></li>
+				</ul>
+			</nav>
+
+		<!-- Heading -->
+			<div id="heading" >
+				<h1>자유게시판</h1>
+			</div>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<div class="content">
+						<div class="container">
+            <hr/>
+            <!-- <div class="row"> -->
+                <div class="col-md-10">
+               	 <input id="id" type="hidden" th:value="${board?.id}"/>
+                    <table class="table table-condensed" width="100%">
+                        <thead>
+                            <tr align="center">
+                                <th width="10%">제목</th>
+                                <th width="60%"><!-- <input th:value="${board?.title}"/> --><span th:utext="${board?.title}"></span> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>작성일
+                                </td>
+                                <td>
+                               <div th:utext="${board?.wdate}"></div> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>글쓴이
+                                </td>
+                                <td>
+                                <!-- <input id="uname" type="text" class="col-md-1 form-control input-sm"  th:value="${board?.uname}"/> <span style='float:right'>조회 : 0</span> -->
+                               <span th:utext="${board?.uname}"></span>  <span style='float:right'>조회 :<span style='float:right' th:utext="${board?.viewcount}"></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td>내용</td>
+                                <td>
+                                   <p><div th:utext="${board?.content}"></div>
+                                    <!-- <textarea id="content" class="col-md-1 form-control input-sm" maxlength="100" rows="4" style="height: 90px;"
+						                th:text="${board?.content}"></textarea> --></p>
+                       
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <table id="commentTable" class="table table-condensed"></table>
+                    <table class="table table-condensed">
+                        <tr>
+                            <td>
+                                <span class="form-inline" role="form">
+                                    <p>
+                                        <div class="form-group">
+                                            <input type="text" id="commentParentName" name="commentParentName" class="form-control col-lg-2" data-rule-required="true" placeholder="이름" maxlength="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" id="commentParentPassword" name="commentParentPassword" class="form-control col-lg-2" data-rule-required="true" placeholder="패스워드" maxlength="10">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" id="commentParentSubmit" name="commentParentSubmit" class="btn btn-default">확인</button>
+                                        </div>
+                                    </p>
+                                        <textarea id="commentParentText" class="form-control col-lg-12" style="width:100%" rows="4"></textarea>
+                                </span>
+                            </td>
+                        </tr>
+                    </table> -->
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <td width="10%"><a href="list"class="btn btn-primary btn-block" style="text-decoration: none; color: #ffffff; width: 100px;">목록</a></td>
+                                <td width="60%"></td>
+                                <td width="10%"><a href="board"class="btn btn-primary btn-block" style="text-decoration: none; color: #ffffff; width: 100px; float: right;">글쓰기</a></td>
+                                <td width="10%"><a th:href="'/board?id='+${board.id}"class="btn btn-primary btn-block" style="text-decoration: none; color: #ffffff; width: 100px; float: right;">수정</a></td>
+                                <td width="10%"><a th:href="'/board?id='+${board.id}"class="btn btn-danger btn-block" style="text-decoration: none; color: #ffffff; width: 100px; float:right;">삭제</a></td>
+                                
+                            </tr>
+                        </thead>
+                    </table>	
+						
+						
+						
+				 </div> 
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section style="text-align: center; width: 100%"></section>
+						<section style="text-align: center; width: 100%">
+							<img src="images/dgict.png" >
+						</section>
+						<section style="text-align:right; width: 100%">
+							<ul class="plain">
+								<li><a href="https://www.youtube.com/channel/UCDnykcJVR0hIrG98YvF8lKg"><i class="icon fa-youtube">&nbsp;</i>Youtube</a></li>
+								<li><a href="https://www.facebook.com/Hustar-ICT-%EC%B7%A8%EC%97%85%EC%A7%80%EC%9B%90%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-100134418019404/"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; HuStar ICT Academy, 2nd student.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

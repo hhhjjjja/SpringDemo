@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="mappers.memberMapper">
+
+	<insert id="register" parameterType="info.thecodinglive.model.MemberVO">
+		insert into user (id, password, name, phone, email, auth)
+		values(#{id}, #{password}, #{name}, #{phone}, #{email}, #{auth})
+	</insert>
+
+	<select id="login" parameterType="info.thecodinglive.model.LoginVO" resultType="info.thecodinglive.model.MemberVO">
+		SELECT ID, PASSWORD, NAME, PHONE, EMAIL, AUTH
+		FROM user
+		WHERE id=#{id} AND password=#{password}
+	</select>
+	
+</mapper>

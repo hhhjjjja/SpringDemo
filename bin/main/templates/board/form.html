@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<!--
+	Industrious by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>HUSTAR ICT-자유게시판</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"  />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" th:href="@{/css/base.css}" />
+   		 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="home"><img src="/images/hustar-logo.png" width="20%"></a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="summary">사업개요</a></li>
+					<li><a href="company">참여기업</a></li>
+					<li><a href="list">커뮤니티</a></li>
+					<li><a href="logout" th:if="${userNameSe} != null" th:text="로그아웃"></a></li>
+					<li><a href="login" th:unless="${userNameSe} != null" th:text="로그인"></a></li>
+				</ul>
+			</nav>
+
+		<!-- Heading -->
+			<div id="heading" >
+				<h1>자유게시판</h1>
+			</div>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<div class="content">
+						 <div class="container">
+						        <div class="page-header">
+						            <h1>게시글 등록</h1>
+						        </div>
+						    <br/>
+						        <input id="id" type="hidden" th:value="${board?.id}"/>
+						        <input id="board_wdate" type="hidden" th:value="${board?.wdate}"/> 
+						     <table class="table" >
+						            <tr >
+						                <th style="padding:13px 0 0 15px" >글제목</th>
+						                <td colspan="3" >                   
+						                      <input id="title" type="text" class="col-md-1 form-control input-sm" th:value="${board?.title}"/>                
+						                </td>
+						            </tr>
+						           <tr>	
+						               <th style="padding:13px 0 0 15px;">카테고리</th>
+						               <td >
+						               	<div class="pull-left">
+						               		<select id="category"   th:value="${board?.category}">
+						               		<option value="카테고리">선택전</option>
+						               		<option value="문의">문의</option>
+						               		<option value="후기">후기</option>
+						               		<option value="기타">기타</option>
+						               		</select>
+						               	</div>
+						               </td>
+						               <td></td>
+						                <td></td>
+						            </tr>
+						            
+						            <tr>
+						              <th style="padding:13px 0 0 15px;">생성날짜</th>
+						              <td colspan="3" >
+						              	<div class="pull-left">
+						               		<input type="text" class="col-md-1 form-control input-sm"  readonly="readonly" th:value="${board?.wdate}"/>
+						               	</div>
+						              </td>
+						              
+						            </tr>
+						            <tr>	
+						               <th style="padding:13px 0 0 15px;">작성자</th>
+						               <td colspan="3">
+						               	<div class="pull-left">
+						               		<input id="uname" type="text"  th:value="${board?.uname}"/>
+						               	</div>
+						               </td>
+						            </tr>
+						           <tr>
+						                <th style="padding:13px 0 0 15px;">내용</th>
+						                <td colspan="3"><textarea id="content" class="col-md-1 form-control input-sm" maxlength="300" rows="4" style="height: 100px;"
+						                th:text="${board?.content}"></textarea><span class="help-block"></span>
+						                </td>
+						            </tr> 
+						           
+						            <tr>
+						             <td width="10%"><a href="/list" class="btn btn-primary btn-block" style="text-decoration: none;">목록으로</a></td>
+						             <td width="40%"></td>
+						             <td width="10%"> <a th:if="${board?.id}" type="button" class="btn btn-primary btn-block" id="update" style="text-decoration: none; color: #ffffff;">수정</a></td>
+						             <td width="10%"> <a th:if="!${board?.id}" type="button" class="btn btn-primary btn-block" id="insert" style="text-decoration: none;color: #ffffff;">저장</a>
+						             <a th:if="${board?.id}" type="button" class="btn btn-danger btn-block" id="delete" style="text-decoration: none; color: #ffffff;">삭제</a></td>
+						             
+						            </tr>
+						        </table>
+						       
+						        <div class="pull-left">
+						            
+						        </div>
+						        <div class="pull-right">
+						           
+						           
+						            
+						            
+						        </div>
+						    </div>
+						
+						  <!--   <div th:replace="layout/footer::footer"></div> -->
+						
+						    <script th:src="@{/js/jquery.min.js}"></script>
+						    <script th:if="!${board?.id}">
+						        $('#insert').click(function () {
+						        	var jsonData=JSON.stringify({
+						        		title:$('#title').val(),
+						        		category:$('#category').val(),
+						        		uname:$('#uname').val(),
+						        		content:$('#content').val()
+						        	});
+						            
+						        	
+						        	$.ajax({
+						                url: "http://localhost:8080/insert",
+						                type: "POST",
+						                data: jsonData,
+						                contentType: "application/json",
+						                headers: {
+						                    "Authorization": "Basic " + btoa("havi" + ":" + "test")
+						                },
+						                dataType: "json",
+						                    success: function () {
+						                        alert('저장 성공!');
+						                        location.href = '/list';
+						                },
+						                error: function () {
+						                    alert('저장 실패!');
+						                   
+						                }
+						            });
+						        });
+						    </script>
+						    <script th:if="${board?.id}">
+						        $('#update').click(function () {
+						            var jsonData = JSON.stringify({
+						            	title:$('#title').val(),
+						        		category:$('#category').val(),
+						        		uname:$('#uname').val(),
+						        		content:$('#content').val()
+						            });
+						            $.ajax({
+						                       url: "http://localhost:8080/update/" + $('#id').val(),
+						                       type: "PUT",
+						                       data: jsonData,
+						                       contentType: "application/json",
+						                       dataType: "json",
+						                       success: function () {
+						                           alert('수정 성공!');
+						                           location.href = '/list';
+						                       },
+						                       error: function () {
+						                           alert(this.url);
+						                       }
+						                   });
+						        });
+						        $('#delete').click(function () {
+						            $.ajax({
+						                       url: "http://localhost:8080/delete/" + $('#id').val(),
+						                       type: "DELETE",
+						                       success: function () {
+						                           alert('삭제 성공!');
+						                           location.href = '/list';
+						                       },
+						                       error: function () {
+						                           alert('삭제 실패!');
+						                       }
+						                   });
+						        });
+						    </script>
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section style="text-align: center; width: 100%"></section>
+						<section style="text-align: center; width: 100%">
+							<img src="images/dgict.png" >
+						</section>
+						<section style="text-align:right; width: 100%">
+							<ul class="plain">
+								<li><a href="https://www.youtube.com/channel/UCDnykcJVR0hIrG98YvF8lKg"><i class="icon fa-youtube">&nbsp;</i>Youtube</a></li>
+								<li><a href="https://www.facebook.com/Hustar-ICT-%EC%B7%A8%EC%97%85%EC%A7%80%EC%9B%90%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-100134418019404/"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; HuStar ICT Academy, 2nd student.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

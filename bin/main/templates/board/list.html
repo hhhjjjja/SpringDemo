@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<!--
+	Industrious by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>HUSTAR ICT-자유게시판</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<link rel="stylesheet" th:href="@{/css/base.css}" />
+ 	    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a class="logo" href="home"><img src="/images/hustar-logo.png" width="20%"></a>
+				<nav>
+					<a href="#menu">Menu</a>
+				</nav>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="home">Home</a></li>
+					<li><a href="summary">사업개요</a></li>
+					<li><a href="company">참여기업</a></li>
+					<li><a href="list">커뮤니티</a></li>
+					<li><a href="logout" th:if="${userNameSe} != null" th:text="로그아웃"></a></li>
+					<li><a href="login" th:unless="${userNameSe} != null" th:text="로그인"></a></li>
+				</ul>
+			</nav>
+
+		<!-- Heading -->
+			<div id="heading" >
+				<h1>자유게시판</h1>
+			</div>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					    <div class="content">
+					    <div class="container">
+				        <div class="page-header">
+				        
+				        </div>
+				        <div class="pull-right" style="width:100px;margin:10px 0;">
+				            <a href="/board " class="btn btn-primary btn-block" style="text-decoration: none;">등록</a>
+				        </div> 
+				        <br/><br/><br/>
+				        <div id="mainHide">
+				            <table class="table table-hover">
+				                <thead>
+				                <tr>
+				                    <th class="col-md-1">글번호</th>
+				                    <th class="col-md-2">카테고리</th>
+				                    <th class="col-md-4">제목</th>
+				                    <th class="col-md-2">작성자</th>
+				                    <th class="col-md-2">작성 날짜</th>
+				                    <th class="col-md-1">조회수</th>
+				                </tr>
+				                </thead>
+				                <tbody>
+				                    <tr th:each="board : ${boardList}">
+				                        <td th:text="${board.id}"></td>
+				                        <td th:text="${board.category}"></td>
+				                        <td><a th:href="'/boardview?id='+${board.id}" th:text="${board.title}" style="text-decoration: none; color: #000000;"></a></td>
+				                        <td th:text="${board.uname}"></td>
+				                        <td th:text="${board.wdate}"></td>
+				                        <td th:text="${board.viewcount}"></td>
+				                    </tr>
+				                </tbody>
+				            </table>
+				        </div>
+				        <br/>
+				        
+				        <nav aria-label="Page navigation" style="text-align:center;">
+				            <ul class="pagination" th:with="startNumber=${T(Math).floor(boardList.number/5)}*5+1, endNumber=(${boardList.totalPages} > ${startNumber}+4) ? ${startNumber}+4 : ${boardList.totalPages}">
+				              
+				                  <li><a aria-label="Previous" href="/list?page=1">&laquo;</a></li>
+				              
+				                <li th:style="${boardList.first} ? 'display:none'">
+				                    <a th:href="@{/list(page=${boardList.number})}">&lsaquo;</a>
+				                </li>
+				
+				                <li th:each="page :${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${boardList.number}+1) ? 'active'">
+				                    <a th:href="@{/list(page=${page})}" th:text="${page}"><span class="sr-only"></span></a>
+				                </li>
+				
+				                <li th:style="${boardList.last} ? 'display:none'">
+				                    <a th:href="@{/list(page=${boardList.number}+2)}">&rsaquo;</a>
+				                </li>
+				              
+				                <li><a aria-label="Next" th:href="@{/list(page=${boardList.totalPages})}">&raquo;</a></li>
+				           
+				            </ul> 
+				        </nav>  
+				       </div>
+				    </div> 
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+					<div class="content">
+						<section style="text-align: center; width: 100%"></section>
+						<section style="text-align: center; width: 100%">
+							<img src="images/dgict.png" >
+						</section>
+						<section style="text-align:right; width: 100%">
+							<ul class="plain">
+								<li><a href="https://www.youtube.com/channel/UCDnykcJVR0hIrG98YvF8lKg"><i class="icon fa-youtube">&nbsp;</i>Youtube</a></li>
+								<li><a href="https://www.facebook.com/Hustar-ICT-%EC%B7%A8%EC%97%85%EC%A7%80%EC%9B%90%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-100134418019404/"><i class="icon fa-facebook">&nbsp;</i>Facebook</a></li>
+							</ul>
+						</section>
+					</div>
+					<div class="copyright">
+						&copy; HuStar ICT Academy, 2nd student.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
